@@ -13,6 +13,13 @@ LINE = "My dentist charges $40 to say 'floss more', so now I floss in the parkin
 
 
 def main() -> int:
+    # Gate check: the entry must be 1-200 code points, not only whitespace.
+    # Failing loudly here is better than a silent reject at grading time.
+    length = len(LINE)
+    if length < 1 or length > 200 or not LINE.strip():
+        print(f"entry invalid: {length} code points (need 1-200, non-blank)",
+              file=sys.stderr)
+        return 1
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     path = os.path.join(out_dir, "entry.txt")
     os.makedirs(out_dir, exist_ok=True)
